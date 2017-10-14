@@ -11,10 +11,10 @@ import UIKit
 // Note: For sake of ease and quick coding, I'm using plenty of constants to constrain the views.
 // Given time and some consulting from a designer, it would be preferred to use more multipliers instead
 // as now with the release of iPhone X, there is a larger variety of sizes to account for
-class WeatherLayoutManager {
+struct WeatherLayoutManager {
 
-    public class func layout(vc: WeatherViewController) {
-        let layout = WeatherLayoutManager()
+    public static func layout(vc: WeatherViewController) {
+        var layout = WeatherLayoutManager()
         layout.vc = vc
         layout.configureTemperatureLabel()
         layout.configureLocationTextField()

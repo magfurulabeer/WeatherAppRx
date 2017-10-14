@@ -8,7 +8,7 @@ target 'WeatherAppRx' do
   pod 'RxSwift'
   pod 'RxCocoa'
   pod 'SwiftyJSON'
-  
+  pod 'Moya/RxSwift'
   # Pods for WeatherAppRx
 
   target 'WeatherAppRxTests' do

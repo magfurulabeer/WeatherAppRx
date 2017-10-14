@@ -7,20 +7,29 @@
 //
 
 import UIKit
+import RxSwift
+import RxCocoa
+import Moya
 
 class WeatherViewController: UIViewController {
 
+    let disposeBag = DisposeBag()
+    var viewModel = WeatherViewModel()
+    
+//    let openWeatherService = OpenW
     let locationTextField:  UITextField = {
         let tf = UITextField()
+        tf.text = ""
         tf.backgroundColor = UIColor.clear
         tf.textColor = UIColor.white
         tf.layer.borderWidth = 1
         tf.layer.borderColor = UIColor.white.withAlphaComponent(0.5).cgColor
+        tf.textAlignment = NSTextAlignment.center
         return tf
     }()
 
-    let iconImageView: UIImageView = {
-        let iv = UIImageView()
+    let iconImageView: CachedImageView = {
+        let iv = CachedImageView()
         iv.contentMode = UIViewContentMode.scaleAspectFit
         return iv
     }()
@@ -77,15 +86,43 @@ class WeatherViewController: UIViewController {
         super.viewDidLoad()
         
         WeatherLayoutManager.layout(vc: self)
-        
-        
-        
-        
-        
-
-        // Do any additional setup after loading the view.
+        bindViewModel()
     }
 
-    
-
+    func bindViewModel() {
+        locationTextField.rx.text.asDriver()
+            .throttle(3)
+            .drive(viewModel.query)
+            .addDisposableTo(disposeBag)
+        
+        viewModel.temperature.asDriver(onErrorJustReturn: "ERROR")
+            .drive(temperatureLabel.rx.text.asObserver())
+            .addDisposableTo(disposeBag)
+        
+        viewModel.humidity.asDriver(onErrorJustReturn: "n/a")
+            .drive(humidityLabel.rx.text.asObserver())
+            .addDisposableTo(disposeBag)
+        
+        viewModel.pressure.asDriver(onErrorJustReturn: "n/a")
+            .drive(pressureLabel.rx.text.asObserver())
+            .addDisposableTo(disposeBag)
+        
+        viewModel.descriptionText.asDriver(onErrorJustReturn: "")
+            .drive(descriptionLabel.rx.text.asObserver())
+            .addDisposableTo(disposeBag)
+        
+        viewModel.iconUrl
+            .subscribe(onNext: { [weak self] url in
+                guard let strongSelf = self else { return }
+                
+                guard let url = url else {
+                    strongSelf.iconImageView.image = UIImage()
+                    return
+                }
+                
+                strongSelf.iconImageView.setImage(url: url)
+            })
+            .addDisposableTo(disposeBag)
+        
+    }
 }

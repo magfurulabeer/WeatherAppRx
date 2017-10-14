@@ -1,9 +1,30 @@
 //
 //  UIViewController+Extensions.swift
-//  WeatherAppRx
+//  WeatherApp
 //
-//  Created by Magfurul Abeer on 10/14/17.
+//  Created by Magfurul Abeer on 10/12/17.
 //  Copyright © 2017 Magfurul Abeer. All rights reserved.
 //
 
-import Foundation
+import UIKit
+
+extension UIViewController {
+    func alert(_ err: Error) {
+        OperationQueue.main.addOperation { [weak self] in
+            let alert = UIAlertController(title: "Error", message: err.localizedDescription, preferredStyle: UIAlertControllerStyle.alert)
+            let ok = UIAlertAction(title: "Ok", style: .default, handler: nil)
+            alert.addAction(ok)
+            self?.present(alert, animated: true, completion: nil)
+        }
+    }
+    
+    func alert(message: String) {
+        OperationQueue.main.addOperation { [weak self] in
+            let alert = UIAlertController(title: "Alert", message: message, preferredStyle: UIAlertControllerStyle.alert)
+            let ok = UIAlertAction(title: "Ok", style: .default, handler: nil)
+            alert.addAction(ok)
+            self?.present(alert, animated: true, completion: nil)
+        }
+    }
+}
+
