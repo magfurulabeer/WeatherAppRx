@@ -11,16 +11,22 @@ import RxSwift
 import Moya
 
 protocol WeatherViewModelInputsType {
-//    var selectedIndex: Observable<Int>! { get set }
-//    var filterText: Observable<String?>! { get set }
+    var query: Variable<String?> { get set }
 }
 
 protocol WeatherViewModelOutputsType {
-//    var displayedUsers: Observable<[User]> { get }
+    var currentWeather: Observable<Weather?> { get }
+    var temperature: Observable<String> { get }
+    var humidity: Observable<String> { get }
+    var pressure: Observable<String> { get }
+    var descriptionText: Observable<String> { get }
+    var iconUrl: Observable<URL?> { get }
 }
 
+// In most cases I try to avoid adding code I won't be using since YAGNI
+// but I generally try to follow this convention when working with RxSwift View Models
+// since I usually end up adding Actions eventually
 protocol WeatherViewModelActionsType {
-//    func didSelectModel(user: User)
 }
 
 protocol WeatherViewModelType {
@@ -118,19 +124,7 @@ class WeatherViewModel: WeatherViewModelType {
                 return components.url
             }
     }()
-    
-//    lazy var icon: Observable<String> = {
-//        return self.currentWeather
-//            .map { weather in
-//                guard let weather = weather else {
-//                    return ""
-//                }
-//                return weather.description.capitalized
-//        }
-//    }()
 }
-
-
 
 extension WeatherViewModel: WeatherViewModelInputsType, WeatherViewModelOutputsType, WeatherViewModelActionsType { }
 

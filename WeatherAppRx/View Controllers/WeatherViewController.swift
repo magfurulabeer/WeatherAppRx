@@ -16,7 +16,6 @@ class WeatherViewController: UIViewController {
     let disposeBag = DisposeBag()
     var viewModel = WeatherViewModel()
     
-//    let openWeatherService = OpenW
     let locationTextField:  UITextField = {
         let tf = UITextField()
         tf.text = ""

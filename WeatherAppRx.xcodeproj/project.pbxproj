@@ -102,6 +102,14 @@
 			path = Views;
 			sourceTree = "<group>";
 		};
+		2325BC6D1F9224B100106F25 /* Layouts */ = {
+			isa = PBXGroup;
+			children = (
+				232CA6CA1F91E8C60075561D /* WeatherLayoutManager.swift */,
+			);
+			path = Layouts;
+			sourceTree = "<group>";
+		};
 		2331E7A51F9156B30070DDCF = {
 			isa = PBXGroup;
 			children = (
@@ -125,11 +133,12 @@
 		2331E7B01F9156B30070DDCF /* WeatherAppRx */ = {
 			isa = PBXGroup;
 			children = (
-				2325BC6A1F92219B00106F25 /* Views */,
 				2325BC601F91F9D200106F25 /* Extensions */,
-				2331E7D81F9159360070DDCF /* Services */,
-				2331E7D51F91590E0070DDCF /* Models */,
+				2325BC6D1F9224B100106F25 /* Layouts */,
 				2331E7D11F9158820070DDCF /* Misc */,
+				2331E7D51F91590E0070DDCF /* Models */,
+				2331E7D81F9159360070DDCF /* Services */,
+				2325BC6A1F92219B00106F25 /* Views */,
 				2325BC671F920B1000106F25 /* View Models */,
 				2331E7D21F91588D0070DDCF /* View Controllers */,
 				2331E7BD1F9156B30070DDCF /* Info.plist */,
@@ -161,7 +170,6 @@
 			isa = PBXGroup;
 			children = (
 				2331E7D31F9158E10070DDCF /* WeatherViewController.swift */,
-				232CA6CA1F91E8C60075561D /* WeatherLayoutManager.swift */,
 			);
 			path = "View Controllers";
 			sourceTree = "<group>";
