@@ -13,6 +13,7 @@ class CachedImageView: UIImageView {
     let cache = NSCache<NSString, UIImage>()
     
     func setImage(url: URL) {
+        self.isHidden = false
         let urlString = url.absoluteString as NSString
         
         if let cachedImage = cache.object(forKey: urlString) {

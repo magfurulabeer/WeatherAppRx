@@ -61,7 +61,7 @@ extension OpenWeatherAPI: TargetType {
         switch self {
         case .currentWeather:
             return "/data/2.5/weather"
-        case .currentWeatherCoordinates:
+        case .currentWeatherCoordinates: // This was put in place if I ever get the chance to use location in this one
             return "/data/2.5/weather"
         case .icon(let name):
             return "/img/w/\(name)"

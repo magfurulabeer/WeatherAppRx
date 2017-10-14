@@ -44,14 +44,19 @@ class WeatherViewModel: WeatherViewModelType {
 
     // MARK: Input
     var query = Variable<String?>(nil)
+    var didPressDone = Variable<()>()
     
     // MARK: Output
     lazy var currentWeather: Observable<Weather?> = {
-        return self.query.asObservable()
+        return
+            self.didPressDone.asObservable()
+            .withLatestFrom(self.query.asObservable())
             .filter { $0 != nil && $0 != "" }
+            .do(onNext: { query in
+                UserDefaults.standard.set(query!, forKey: Constants.lastSearchedKey)
+            })
             .flatMap { self.provider.rx.request(OpenWeatherAPI.currentWeather($0!)) }
             .map { response in
-                print(response)
                 do {
                     let json = try JSONSerialization.jsonObject(with: response.data, options: []) as! [String: Any]
                     return try Weather(data: json)
@@ -90,6 +95,17 @@ class WeatherViewModel: WeatherViewModelType {
                     return "n/a"
                 }
                 return "\(weather.pressure)in"
+        }
+    }()
+    
+    lazy var name: Observable<String?> = {
+        Observable.combineLatest(self.query.asObservable(), self.currentWeather)
+        { (queryString: $0, weather: $1) }
+            .map { queryString, weather in
+                guard let weather = weather else {
+                    return queryString
+                }
+                return weather.name
         }
     }()
     

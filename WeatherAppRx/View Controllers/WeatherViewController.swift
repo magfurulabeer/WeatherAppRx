@@ -83,15 +83,25 @@ class WeatherViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         WeatherLayoutManager.layout(vc: self)
         bindViewModel()
+        locationTextField.text = UserDefaults.standard.string(forKey: Constants.lastSearchedKey)
     }
 
     func bindViewModel() {
+        locationTextField.rx.controlEvent(UIControlEvents.editingDidEndOnExit).asDriver()
+            .drive(viewModel.didPressDone)
+            .addDisposableTo(disposeBag)
+        
         locationTextField.rx.text.asDriver()
             .throttle(3)
             .drive(viewModel.query)
+            .addDisposableTo(disposeBag)
+        
+        // FIXME: When changing text, it changes it to what was there before the editing
+        // As with most of this project, I would put more focus on this if given the time
+        viewModel.name.asDriver(onErrorJustReturn: nil)
+            .drive(locationTextField.rx.text.asObserver())
             .addDisposableTo(disposeBag)
         
         viewModel.temperature.asDriver(onErrorJustReturn: "ERROR")
@@ -115,7 +125,9 @@ class WeatherViewController: UIViewController {
                 guard let strongSelf = self else { return }
                 
                 guard let url = url else {
-                    strongSelf.iconImageView.image = UIImage()
+                    // I had an interesting issue where setting the image to nil did not change what was displayed
+                    // Assuming I had more time, I probably would have tried to fix this though it would be low priority
+                    strongSelf.iconImageView.isHidden = true
                     return
                 }
                 
